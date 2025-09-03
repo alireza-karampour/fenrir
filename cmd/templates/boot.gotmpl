@@ -1,0 +1,22 @@
+package {{.Package}}
+
+import (
+	"testing"
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+  "github.com/alireza-karampour/fenrir/pkg/cli/subcmd/minikube"
+	_ "github.com/alireza-karampour/fenrir/pkg/v1"
+)
+
+func Test{{.Suite}}(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "{{.Suite}} Suite")
+}
+
+var _ = AfterSuite(func() error {
+  err := minikube.Stop()
+  if err != nil {
+    return err
+  }
+  return minikube.Delete()
+})
