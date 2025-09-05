@@ -8,12 +8,12 @@ import (
 	"text/template"
 
 	"codeberg.org/bit101/go-ansi"
-	"github.com/spf13/cobra"
-	"github.com/stoewer/go-strcase"
 	"github.com/alireza-karampour/fenrir/pkg/cli/subcmd/helm"
 	"github.com/alireza-karampour/fenrir/pkg/cli/subcmd/kubectl"
 	"github.com/alireza-karampour/fenrir/pkg/cli/subcmd/minikube"
 	"github.com/alireza-karampour/fenrir/pkg/utils"
+	"github.com/spf13/cobra"
+	"github.com/stoewer/go-strcase"
 )
 
 const (
@@ -29,8 +29,8 @@ var templates embed.FS
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "shetest",
-	Short: "a cli for setting up e2e test env for Shecan",
+	Use:   "fenrir",
+	Short: "a cli for setting up e2e test env for Fenrir",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	RunE: func(cmd *cobra.Command, args []string) error {
