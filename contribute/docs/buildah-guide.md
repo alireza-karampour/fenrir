@@ -69,7 +69,7 @@ import (
     "log"
 
     "github.com/containers/buildah"
-    is "github.com/containers/image/storage"
+    is "github.com/containers/image/v5/storage"
     "github.com/containers/storage"
     "github.com/sirupsen/logrus"
 )
