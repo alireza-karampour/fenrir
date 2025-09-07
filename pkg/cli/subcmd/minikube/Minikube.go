@@ -10,7 +10,6 @@ import (
 	"strings"
 	"sync"
 
-	"codeberg.org/bit101/go-ansi"
 	"github.com/alireza-karampour/fenrir/pkg/cli"
 	"github.com/alireza-karampour/fenrir/pkg/task"
 	. "github.com/alireza-karampour/fenrir/pkg/utils"
@@ -94,8 +93,7 @@ func Stop() error {
 	res, err := singleton.Run("stop", nil)
 	msg, _ := io.ReadAll(res)
 	if err != nil {
-		PrintErr("failed to stop cluster")
-		ansi.NewLine()
+		PrintlnErr("failed to stop cluster")
 		return errors.Join(err, fmt.Errorf("%s", string(msg)))
 	}
 
@@ -106,29 +104,24 @@ func Delete() error {
 	res, err := singleton.Run("delete", nil)
 	msg, _ := io.ReadAll(res)
 	if err != nil {
-		PrintErr("failed to delete cluster")
-		ansi.NewLine()
+		PrintlnErr("failed to delete cluster")
 		return errors.Join(err, fmt.Errorf("%s", string(msg)))
 	}
-	PrintOk("successfully deleted cluster")
-	ansi.NewLine()
+	PrintlnOk("successfully deleted cluster")
 	return nil
 }
 
 func Start() (err error) {
 	defer func() {
 		if err != nil {
-			PrintErr("minikube failed")
-			ansi.NewLine()
+			PrintlnErr("minikube failed")
 		} else {
-			PrintOk("minikube started successfully")
-			ansi.NewLine()
+			PrintlnOk("minikube started successfully")
 		}
 	}()
-	Print("starting minikube")
-	ansi.NewLine()
+	Println("starting minikube")
 
-	err = task.NewTask(fmt.Sprintf("%s %s", path.Join(MINIKUBE_BIN_DEST, MINIKUBE_EXE_NAME), "start")).SetOut(os.Stdout).Run()
+	err = task.NewTask(fmt.Sprintf("%s %s", path.Join(MINIKUBE_BIN_DEST, MINIKUBE_EXE_NAME), "start --driver docker --listen-address 0.0.0.0")).SetOut(os.Stdout).Run()
 	if err != nil {
 		return
 	}
@@ -137,16 +130,13 @@ func Start() (err error) {
 }
 
 func LoadAll(root string) (err error) {
-	Print(fmt.Sprintf("loading images from %s", MINIKUBE_IMAGES_DIR))
-	ansi.NewLine()
+	Println(fmt.Sprintf("loading images from %s", MINIKUBE_IMAGES_DIR))
 	defer func() {
 		if err != nil {
-			PrintErr("minikube failed to load images")
-			ansi.NewLine()
+			PrintlnErr("minikube failed to load images")
 			return
 		} else {
-			PrintOk("minikube loaded images")
-			ansi.NewLine()
+			PrintlnOk("minikube loaded images")
 		}
 	}()
 	err = os.MkdirAll(root, 0777)
@@ -176,33 +166,28 @@ func LoadAll(root string) (err error) {
 
 func LoadImage(tar string) error {
 	c := getInstance()
-	Print(fmt.Sprintf("loading image %s", tar))
-	ansi.NewLine()
+	Println(fmt.Sprintf("loading image %s", tar))
 	res, err := c.Run(fmt.Sprintf("image load %s", tar), nil)
 	msg, _ := io.ReadAll(res)
 	if err != nil {
 		return errors.Join(err, fmt.Errorf("%s", string(msg)))
 	}
-	PrintOk(fmt.Sprintf("loaded image %s", tar))
-	ansi.NewLine()
+	PrintlnOk(fmt.Sprintf("loaded image %s", tar))
 	return nil
 }
 
 func enableMetallbAddon() (err error) {
 	defer func() {
 		if err != nil {
-			PrintErr("failed to enable metallb addon")
-			ansi.NewLine()
+			PrintlnErr("failed to enable metallb addon")
 			return
 
 		} else {
-			PrintOk("enabled metallb addon")
-			ansi.NewLine()
+			PrintlnOk("enabled metallb addon")
 			return
 		}
 	}()
-	Print("enabling metallb")
-	ansi.NewLine()
+	Println("enabling metallb")
 
 	tsk := task.NewTask(fmt.Sprintf("%s %s", path.Join(MINIKUBE_BIN_DEST, MINIKUBE_EXE_NAME), "addons enable metallb"))
 	tsk.SetOut(os.Stdout)
@@ -218,17 +203,14 @@ func enableMetallbAddon() (err error) {
 func configureMetallb() (err error) {
 	defer func() {
 		if err != nil {
-			PrintErr("failed to configure metallb")
-			ansi.NewLine()
+			PrintlnErr("failed to configure metallb")
 			return
 		} else {
-			PrintOk("configured metallb")
-			ansi.NewLine()
+			PrintlnOk("configured metallb")
 			return
 		}
 	}()
-	Print("configuring metallb")
-	ansi.NewLine()
+	Println("configuring metallb")
 
 	tsk := task.NewTask(fmt.Sprintf("%s %s", path.Join(MINIKUBE_BIN_DEST, MINIKUBE_EXE_NAME), "addons configure metallb"))
 	tsk.SetIn(os.Stdin).

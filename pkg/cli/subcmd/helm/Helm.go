@@ -69,8 +69,7 @@ func (c *Cmd) Init() error {
 			res, err := c.Run(fmt.Sprintf("install %s %s", v.Name(), chartPath), nil)
 			msg, _ := io.ReadAll(res)
 			if err != nil {
-				utils.PrintErr(fmt.Sprintf("failed to install chart for %s", v.Name()))
-				ansi.NewLine()
+				utils.PrintlnErr(fmt.Sprintf("failed to install chart for %s", v.Name()))
 				return errors.Join(err, fmt.Errorf("%s", string(msg)))
 			}
 			_, err = os.Stdout.Write(msg)
@@ -78,8 +77,7 @@ func (c *Cmd) Init() error {
 				return err
 			}
 			ansi.NewLine()
-			utils.PrintOk(fmt.Sprintf("chart for %s installed successfully", v.Name()))
-			ansi.NewLine()
+			utils.PrintlnOk(fmt.Sprintf("chart for %s installed successfully", v.Name()))
 		}
 	}
 	return nil

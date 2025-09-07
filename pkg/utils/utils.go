@@ -35,6 +35,26 @@ func Print(s string) {
 	ansi.Printf(ansi.Blue, "[%s]", s)
 }
 
+func PrintlnOk(s string) {
+	PrintOk(s)
+	ansi.NewLine()
+}
+
+func PrintlnWarn(s string) {
+	PrintfWarn(s)
+	ansi.NewLine()
+}
+
+func PrintlnErr(s string) {
+	PrintErr(s)
+	ansi.NewLine()
+}
+
+func Println(s string) {
+	Print(s)
+	ansi.NewLine()
+}
+
 func Sum(path string) ([]byte, error) {
 	file, err := os.Open(path)
 	if err != nil {

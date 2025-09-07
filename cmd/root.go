@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"codeberg.org/bit101/go-ansi"
 	"github.com/alireza-karampour/fenrir/pkg/cli/subcmd/helm"
 	"github.com/alireza-karampour/fenrir/pkg/cli/subcmd/kubectl"
 	"github.com/alireza-karampour/fenrir/pkg/cli/subcmd/minikube"
@@ -74,16 +73,13 @@ func init() {
 }
 
 func Bootstarp(dir string) (err error) {
-	utils.Print("bootstraping test suite")
-	ansi.NewLine()
+	utils.Println("bootstraping test suite")
 	defer func() {
 		if err != nil {
-			utils.PrintErr("failed to bootstrap test suite")
-			ansi.NewLine()
+			utils.PrintlnErr("failed to bootstrap test suite")
 			return
 		} else {
-			utils.PrintOk("bootstraped tests suite")
-			ansi.NewLine()
+			utils.PrintlnOk("bootstraped tests suite")
 			return
 		}
 	}()

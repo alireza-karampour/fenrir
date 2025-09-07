@@ -33,16 +33,13 @@ type Tar struct {
 }
 
 func (t *Tar) ExtractFile(to string, as string, opts DownloadableOpts) (err error) {
-	Print(fmt.Sprintf("extracting file %s to %s", as, to))
-	ansi.NewLine()
+	Println(fmt.Sprintf("extracting file %s to %s", as, to))
 	defer func() {
 		if err != nil {
-			PrintErr("extraction failed")
-			ansi.NewLine()
+			PrintlnErr("extraction failed")
 			return
 		} else {
-			PrintOk("extraction done")
-			ansi.NewLine()
+			PrintlnOk("extraction done")
 		}
 	}()
 	file, err := os.OpenFile(path.Join(t.Dest, t.Name), os.O_RDONLY, 0o666)
@@ -116,8 +113,7 @@ func (d *Downloadable) Download(opts DownloadableOpts) error {
 	dlbl := path.Join(d.Dest, d.Name)
 	if _, err := os.Stat(dlbl); errors.Is(err, os.ErrNotExist) {
 		ansi.Tab()
-		PrintfWarn(fmt.Sprintf("%s not found", d.Name))
-		ansi.NewLine()
+		PrintlnWarn(fmt.Sprintf("%s not found", d.Name))
 		if !d.shouldDownload() {
 			return nil
 		}
@@ -142,8 +138,7 @@ func (d *Downloadable) Download(opts DownloadableOpts) error {
 			return err
 		}
 		if !ok {
-			PrintfWarn(fmt.Sprintf("invalid %s checksum", d.Name))
-			ansi.NewLine()
+			PrintlnWarn(fmt.Sprintf("invalid %s checksum", d.Name))
 			if !d.shouldDownload() {
 				return nil
 			}
@@ -153,8 +148,7 @@ func (d *Downloadable) Download(opts DownloadableOpts) error {
 			}
 		} else {
 			if (opts & DL_VERBOSE) == DL_VERBOSE {
-				PrintOk(fmt.Sprintf("%s found", d.Name))
-				ansi.NewLine()
+				PrintlnOk(fmt.Sprintf("%s found", d.Name))
 			}
 		}
 	}
@@ -208,15 +202,13 @@ func (d *Downloadable) download(url string, dest string, name string) error {
 	if err != nil {
 		return err
 	}
-	PrintOk(fmt.Sprintf("%s download finished", name))
-	ansi.NewLine()
+	PrintlnOk(fmt.Sprintf("%s download finished", name))
 	dlFile.Close()
 	sum, err := Sum(path.Join(dest, name))
 	if err != nil {
 		return err
 	}
-	Print(fmt.Sprintf("%s sum: %x", name, sum))
-	ansi.NewLine()
+	Println(fmt.Sprintf("%s sum: %x", name, sum))
 	return nil
 }
 
